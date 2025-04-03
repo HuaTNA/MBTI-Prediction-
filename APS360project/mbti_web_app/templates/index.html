@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI Emotion Recognition Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 中性马卡龙色板 */
+        :root {
+            /* 基础中性色 - 背景与文字 */
+            --neutral-white: #FFFFFF;
+            --neutral-cream: #F9F7F5;
+            --neutral-light: #EBE8E4;
+            --neutral-medium: #D0CCC7;
+            --neutral-dark: #5B5550;
+            --neutral-darker: #3F3B37;
+            
+            /* 主色调 - 去粉化马卡龙 */
+            --primary-sage: #D2DDD0;     /* 鼠尾草绿 - 主色调1 */
+            --primary-sky: #C2D3DF;      /* 奶油蓝 - 主色调2 */
+            --primary-sand: #E6DED3;     /* 奶油米 - 主色调3 */
+            --primary-stone: #D7D2CC;    /* 岩石灰 - 主色调4 */
+            
+            /* 点缀色 - 强调用 */
+            --accent-sage-dark: #AEC0AB;  /* 深鼠尾草 */
+            --accent-sky-dark: #91AFCA;   /* 深奶油蓝 */
+            --accent-sand-dark: #CEC2B0;  /* 深奶油米 */
+            --accent-stone-dark: #B8B2AA; /* 深岩石灰 */
+            
+            /* 情绪色彩 - 柔和版 */
+            --emotion-happy: #FCE8B2;    /* 杏黄 - 快乐 */
+            --emotion-calm: #D6EFFF;     /* 雾蓝 - 平静 */
+            --emotion-sad: #B6B1D1;      /* 雾紫 - 忧郁 */
+            --emotion-anxious: #CBE6D4;  /* 水雾绿 - 焦虑 */
+            --emotion-excited: #A0DDE6;  /* 薄荷蓝 - 兴奋 */
+            
+            /* 情绪配色映射 */
+            --emotion-happy-gradient: linear-gradient(to right, var(--emotion-happy), #F8D787);
+            --emotion-calm-gradient: linear-gradient(to right, var(--emotion-calm), #A8DADC);
+            --emotion-sad-gradient: linear-gradient(to right, var(--emotion-sad), #9D97BC);
+            --emotion-anxious-gradient: linear-gradient(to right, var(--emotion-anxious), #AECFB5);
+            --emotion-excited-gradient: linear-gradient(to right, var(--emotion-excited), #7DCAD5);
+            --emotion-neutral-gradient: linear-gradient(to right, var(--primary-stone), var(--accent-stone-dark));
+        }
+        
+        /* Main Background & Container */
+        body {
+            font-family: 'Quicksand', 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--neutral-cream), var(--primary-sage), var(--primary-sky));
+            background-attachment: fixed;
+            color: var(--neutral-dark);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Subtle decorative elements */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        
+        body::before {
+            background: radial-gradient(circle, var(--emotion-happy), transparent 70%);
+            top: -100px;
+            right: -100px;
+        }
+        
+        body::after {
+            background: radial-gradient(circle, var(--emotion-calm), transparent 70%);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--emotion-happy), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .container::after {
+            content: "";
+            position: absolute;
+            bottom: -25px;
+            left: -25px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--primary-sky), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            color: var(--neutral-darker);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1::after {
+            content: "✨";
+            margin-left: 10px;
+            font-size: 0.8em;
+            color: var(--emotion-happy);
+        }
+
+        h1::before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 0.8em;
+            color: var(--emotion-happy);
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-sage), var(--primary-sky));
+            border-radius: 3px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: none;
+            border-radius: 18px;
+            background-color: var(--neutral-white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-sage), var(--primary-sky));
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* Buttons */
+        button {
+            background: linear-gradient(135deg, var(--primary-sky), var(--accent-sky-dark));
+            color: var(--neutral-white);
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: transform 0.5s ease;
+            z-index: 0;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--accent-sky-dark), var(--primary-sky));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover::after {
+            transform: rotate(30deg) translate(10%, 10%);
+        }
+
+        button:disabled {
+            background: linear-gradient(135deg, var(--neutral-medium), var(--neutral-light));
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Start Test Button - Special styling */
+        #start-test {
+            background: linear-gradient(135deg, var(--primary-sage), var(--accent-sage-dark));
+            font-size: 18px;
+            padding: 15px 35px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #start-test::before {
+            content: "🚀 ";
+            margin-right: 5px;
+        }
+
+        #start-test:hover {
+            background: linear-gradient(135deg, var(--accent-sage-dark), var(--primary-sage));
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Video Container */
+        .video-container {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Video Elements */
+        .video-feed, .analytics {
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+            .video-feed, .analytics {
+                width: 50%;
+            }
+        }
+
+        #video {
+            width: 100%;
+            border-radius: 15px;
+            border: 3px solid var(--primary-sky);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        #video:hover {
+            transform: scale(1.02);
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        /* Emotion Probability Bars */
+        .probability-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .probability-bar:hover {
+            transform: scale(1.02);
+        }
+
+        .probability-label {
+            width: 80px;
+            text-align: right;
+            padding-right: 15px;
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+
+        .probability-value {
+            width: 60px;
+            text-align: right;
+            padding-right: 15px;
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+
+        .probability-progress {
+            flex-grow: 1;
+            height: 20px;
+            background-color: var(--neutral-light);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Emotion-specific fill colors */
+        .emotion-happy .probability-fill {
+            background: var(--emotion-happy-gradient);
+        }
+
+        .emotion-sad .probability-fill {
+            background: var(--emotion-sad-gradient);
+        }
+
+        .emotion-angry .probability-fill {
+            background: linear-gradient(to right, var(--emotion-anxious), var(--accent-sage-dark));
+        }
+
+        .emotion-neutral .probability-fill {
+            background: var(--emotion-neutral-gradient);
+        }
+
+        .emotion-surprised .probability-fill {
+            background: var(--emotion-excited-gradient);
+        }
+
+        .emotion-contempt .probability-fill {
+            background: linear-gradient(to right, var(--emotion-sad), var(--primary-sky));
+        }
+
+        .emotion-disgust .probability-fill {
+            background: linear-gradient(to right, var(--primary-stone), var(--neutral-medium));
+        }
+
+        .emotion-confused .probability-fill {
+            background: linear-gradient(to right, var(--emotion-anxious), var(--emotion-happy));
+        }
+
+        /* Default fill for other emotions */
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-sky), var(--accent-sky-dark));
+            transition: width 0.5s ease, background 0.3s ease;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .probability-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%
+            );
+            background-size: 15px 15px;
+            animation: shimmer 1s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0 0; }
+            100% { background-position: 15px 0; }
+        }
+
+        /* Question Styling */
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: var(--neutral-cream);
+            border-radius: 18px;
+            border-left: 5px solid var(--primary-sky);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question::after {
+            content: "💭";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            opacity: 0.5;
+        }
+
+        .question:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .question h3 {
+            margin-top: 0;
+            color: var(--neutral-darker);
+            text-align: left;
+            font-size: 1.3em;
+        }
+
+        /* Recognition Result */
+        .recognition-result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--neutral-cream);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-sage);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .recognition-result:hover {
+            transform: translateY(-3px);
+        }
+
+        .speech-text {
+            min-height: 100px;
+            margin: 15px 0;
+            padding: 20px;
+            background-color: var(--neutral-white);
+            border-radius: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+            border: 1px dashed var(--primary-sage);
+            transition: all 0.3s ease;
+        }
+
+        .speech-text:hover {
+            background-color: #FFFDFD;
+            box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.05);
+        }
+
+        .blinking {
+            animation: blink 1.2s ease-in-out infinite;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Results Container */
+        .result-container {
+            margin-top: 30px;
+            padding: 30px;
+            background-color: var(--neutral-cream);
+            border-radius: 18px;
+            border-left: 5px solid var(--primary-sage);
+            display: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-container::before {
+            content: "🎉";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            opacity: 0.7;
+            animation: float 3s ease infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        .mbti-description {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--neutral-cream);
+            border-radius: 18px;
+            border-left: 5px solid var(--primary-sky);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mbti-description::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--primary-sky), transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .mbti-characteristics {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .characteristic {
+            background-color: var(--emotion-calm);
+            border-radius: 30px;
+            padding: 8px 18px;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral-darker);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .characteristic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+            background-color: var(--emotion-happy);
+        }
+
+        .characteristic::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: transform 0.5s ease;
+            z-index: 0;
+        }
+
+        .characteristic:hover::after {
+            transform: rotate(30deg) translate(10%, 10%);
+        }
+
+        /* Progress Steps */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--neutral-light);
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1;
+            color: var(--neutral-dark);
+        }
+
+        .progress-step::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+            height: 3px;
+            width: 30px;
+            background-color: var(--neutral-light);
+            z-index: -1;
+        }
+
+        .progress-step:first-child::before {
+            display: none;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--primary-sky), var(--accent-sky-dark));
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-step.active::before {
+            background: linear-gradient(to right, var(--neutral-light), var(--primary-sky));
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, var(--primary-sage), var(--primary-sky));
+            color: white;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-step.completed::before {
+            background: linear-gradient(to right, var(--primary-sage), var(--primary-sky));
+        }
+
+        .progress-step.completed::after {
+            content: "✓";
+            position: absolute;
+            font-size: 20px;
+            animation: checkmark 0.5s ease;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        /* Microphone Status */
+        .microphone-status {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: var(--neutral-medium);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .microphone-status.active {
+            background-color: var(--primary-sage);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+            50% { transform: scale(1.2); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+            100% { transform: scale(1); box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+        }
+
+        /* Face Detection Status */
+        .face-detection-status {
+            margin-top: 15px;
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .status-success {
+            background-color: var(--emotion-anxious);
+            color: var(--neutral-darker);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .status-success::before {
+            content: "😊 ";
+        }
+
+        .status-warning {
+            background-color: var(--emotion-happy);
+            color: var(--neutral-darker);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .status-warning::before {
+            content: "🤔 ";
+        }
+
+        /* Test Questions */
+        .test-questions {
+            display: none;
+        }
+
+        .current-question {
+            display: block;
+            animation: fadeInUp 0.7s;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Speech Status */
+        .speech-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            padding: 8px 15px;
+            background-color: var(--neutral-white);
+            border-radius: 30px;
+            display: inline-block;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Next/Finish Buttons */
+        #next-question {
+            background: linear-gradient(135deg, var(--primary-sky), var(--accent-sky-dark));
+        }
+
+        #next-question::after {
+            content: " →";
+        }
+
+        #finish-test {
+            background: linear-gradient(135deg, var(--primary-sage), var(--accent-sage-dark));
+        }
+
+        #finish-test::before {
+            content: "🎯 ";
+            margin-right: 5px;
+        }
+
+        /* Dimension Details */
+        .dimension-bars {
+            margin-top: 20px;
+        }
+
+        .dimension-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--neutral-white);
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .dimension-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .dimension-item h4 {
+            margin-top: 0;
+            color: var(--neutral-darker);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            display: inline-block;
+        }
+
+        .dimension-item h4::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-sage), transparent);
+            border-radius: 2px;
+        }
+
+        /* User Responses */
+        .user-responses {
+            margin-top: 25px;
+        }
+
+        .user-response-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: var(--neutral-white);
+            border-radius: 18px;
+            border-left: 5px solid var(--primary-sage);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-response-item::before {
+            content: "💬";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            opacity: 0.5;
+        }
+
+        .user-response-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .user-response-item h5 {
+            margin-top: 0;
+            color: var(--neutral-darker);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Emotion Chart */
+        .emotion-chart {
+            height: 200px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MBTI Emotion Recognition Test</h1>
+        
+        <div class="section">
+            <h2>Start Your Personality Journey!</h2>
+            <p>This test will analyze your MBTI personality type by combining your facial expressions and verbal responses. The test includes multiple questions. Please click the start button and answer each question naturally!</p>
+            <button id="start-test">Start MBTI Test</button>
+        </div>
+        
+        <div class="test-questions" id="test-container">
+            <div class="progress-indicator" id="progress-indicator">
+                <!-- Progress indicator will be generated dynamically via JS -->
+            </div>
+            
+            <div class="video-container">
+                <div class="video-feed">
+                    <video id="video" autoplay></video>
+                    <canvas id="canvas"></canvas>
+                    <div id="face-detection-status" class="face-detection-status status-warning">No face detected</div>
+                </div>
+                
+                <div class="analytics">
+                    <h3>Your Emotion Analysis</h3>
+                    <div class="probability-display" id="emotion-probabilities">
+                        <!-- Emotion probability bars will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recognition-result">
+                <div class="speech-status">
+                    <div id="microphone-status" class="microphone-status"></div>
+                    <span>Speech Recognition: <span id="speech-status-text">Waiting to start</span></span>
+                </div>
+                <h3>What You're Saying:</h3>
+                <div class="speech-text" id="speech-output">
+                    <p>Please speak into the microphone to answer the question...</p>
+                </div>
+            </div>
+            
+            <div id="questions-container">
+                <!-- All questions will be dynamically generated via JS -->
+            </div>
+            
+            <div class="button-container">
+                <button id="next-question" disabled>Next Question</button>
+                <button id="finish-test" style="display: none;">Complete Test</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h2>Your Personality Results!</h2>
+            <div id="mbti-result"></div>
+            <div id="dimension-details"></div>
+            <div id="mbti-description" class="mbti-description"></div>
+        </div>
+    </div>
+    
+    <!-- Load Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Global variables
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let currentQuestion = 1;
+        let speechRecognition = null;
+        let isRecognizing = false;
+        let testStarted = false;
+        let responses = [];
+        let latestEmotions = null;
+        let totalQuestions = 3; // 3 randomly selected questions
+        let selectedQuestions = []; // Will store the randomly selected questions
+        let currentSpeechText = ''; // To store accumulated speech text
+        
+        // MBTI test questions - expanded to 30 questions
+        const mbtiQuestions = [
+            {
+                id: 1,
+                question: "About Social Interactions",
+                description: "When you're in a social setting, how do you typically interact with others? Do you tend to initiate conversations and be active in groups, or do you prefer deep conversations with fewer people?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 2,
+                question: "About Problem Solving",
+                description: "When faced with a complex problem, how do you typically look for solutions? Do you rely more on known facts and experience, or do you prefer exploring new possibilities and innovative methods?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 3,
+                question: "About Planning",
+                description: "How do you plan your daily life and work? Do you like making detailed plans in advance and following them, or do you prefer to stay flexible and adjust as you go?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 4,
+                question: "About Teamwork",
+                description: "In team settings, what role do you usually play? Are you more focused on team harmony and members' feelings, or more concerned with task goals and efficiency?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 5,
+                question: "About Stress Management",
+                description: "When facing stress or emergencies, how do you typically respond? Do you stay calm and analyze to find the best solution, or are you more influenced by emotions and need emotional support?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 6,
+                question: "About Leisure Time",
+                description: "How do you spend your leisure time? Do you prefer attending social activities and meeting new people, or do you tend to spend time alone or with close friends in quieter settings?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 7,
+                question: "About Learning Styles",
+                description: "Which learning style do you prefer? Are you better at learning concrete, practical skills and facts, or do you enjoy grasping abstract concepts and theoretical frameworks?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 8,
+                question: "About Decision Making",
+                description: "When making important decisions, what factors do you primarily consider? Do you base them on logic and objective analysis, or do you consider more how the decision affects people and relationships?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 9,
+                question: "About Time Management",
+                description: "Describe your time management approach. Do you prefer structured, planned living, or do you enjoy more spontaneous, free arrangements? How do you react when plans are disrupted?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 10,
+                question: "About Communication Style",
+                description: "Describe your communication style. Do you directly express your thoughts and opinions, or do you consider listeners' emotional responses and adjust your expression style?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 11,
+                question: "About Future Outlook",
+                description: "When thinking about the future, what aspects do you tend to consider? Do you focus on realistic possibilities and concrete steps, or do you think more about potential innovations and changes?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 12,
+                question: "About Energy Sources",
+                description: "What kinds of activities or environments make you feel energized? Is it vibrant social settings, or solitude or small-scale deep interactions?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 13,
+                question: "About Handling Conflict",
+                description: "How do you typically handle conflict or disagreement? Do you prioritize resolving the logical inconsistencies or focus more on maintaining harmony in relationships?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 14,
+                question: "About Creative Processes",
+                description: "Describe your creative process. Do you prefer structured approaches with clear guidelines, or do you favor open-ended exploration without many constraints?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 15,
+                question: "About Information Processing",
+                description: "When learning new information, how do you prefer to process it? Do you focus on details and specific facts, or do you look for patterns and broader connections?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 16,
+                question: "About Meeting New People",
+                description: "How do you feel when meeting new people? Are you energized and excited, or do you find it somewhat draining and prefer familiar faces?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 17,
+                question: "About Workplace Environment",
+                description: "What type of workplace environment helps you perform best? Do you prefer clear structures and predictable routines, or do you thrive in more flexible and adaptable settings?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 18,
+                question: "About Personal Values",
+                description: "When making ethical decisions, do you tend to rely more on universal principles and logical analysis, or do you consider more the specific circumstances and impacts on people involved?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 19,
+                question: "About Reading Preferences",
+                description: "What types of books or content do you prefer to read? Do you gravitate toward practical, factual material, or do you enjoy more theoretical, speculative, or imaginative content?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 20,
+                question: "About Group Discussions",
+                description: "In group discussions, are you more likely to speak up early and often, or do you prefer to listen and process before contributing your thoughts?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 21,
+                question: "About Routine and Change",
+                description: "How do you feel about routine versus change? Do you find comfort in established routines, or do you get bored and seek variety and new experiences?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 22,
+                question: "About Giving Feedback",
+                description: "When giving feedback or criticism, what approach do you take? Are you direct and focused on improvement, or are you more concerned with maintaining positive feelings?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 23,
+                question: "About Problem Analysis",
+                description: "When analyzing problems, do you typically focus on concrete, observable facts, or do you think about theoretical possibilities and what might be unseen?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 24,
+                question: "About Social Energy",
+                description: "After attending a social event, do you typically feel energized and ready for more, or do you need time alone to recharge?",
+                dimension: "I/E" // Introversion/Extraversion
+            },
+            {
+                id: 25,
+                question: "About Project Management",
+                description: "When managing a project, do you prefer to establish clear milestones and deadlines, or keep things open-ended to allow for adaptation and inspiration?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 26,
+                question: "About Emotional Responses",
+                description: "When making decisions, how much do you factor in your emotional responses? Do you try to set emotions aside for objectivity, or do you see them as valuable inputs?",
+                dimension: "T/F" // Thinking/Feeling
+            },
+            {
+                id: 27,
+                question: "About Learning Approach",
+                description: "When learning a new skill, do you prefer to learn step-by-step with practical examples, or start with understanding the underlying principles and concepts?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 28,
+                question: "About Conversation Topics",
+                description: "In conversations, do you tend to discuss concrete topics like current events and activities, or do you prefer abstract topics like ideas, theories and possibilities?",
+                dimension: "S/N" // Sensing/Intuition
+            },
+            {
+                id: 29,
+                question: "About Organization",
+                description: "How organized do you keep your physical and digital spaces? Do you have systematic organization methods, or do you prefer a more flexible, as-needed approach?",
+                dimension: "J/P" // Judging/Perceiving
+            },
+            {
+                id: 30,
+                question: "About Decision Factors",
+                description: "When facing a tough decision, are you more concerned with finding the most logical, rational choice regardless of how people feel, or with finding the option that best preserves harmony and wellbeing?",
+                dimension: "T/F" // Thinking/Feeling
+            }
+        ];
+        
+        // MBTI type descriptions
+        const mbtiDescriptions = {
+            "ISTJ": {
+                title: "The Inspector",
+                description: "ISTJs are practical, disciplined, and reliable. They focus on details, are responsible, and excel at organizing and systematizing work. They follow tradition and rules, valuing order and structure.",
+                characteristics: ["Responsible", "Reliable", "Practical", "Organized", "Traditional", "Logical", "Detail-oriented", "Loyal"]
+            },
+            "ISFJ": {
+                title: "The Protector",
+                description: "ISFJs are thoughtful, loyal, and responsible. They quietly care for others' needs, pay attention to details, and create harmonious environments. They value tradition and security.",
+                characteristics: ["Loyal", "Considerate", "Kind", "Responsible", "Traditional", "Practical", "Patient", "Detail-oriented"]
+            },
+            "INFJ": {
+                title: "The Counselor",
+                description: "INFJs are insightful, idealistic, and creative. They seek depth and meaning, care about others' growth, and can envision future possibilities. They stand by their values and beliefs.",
+                characteristics: ["Insightful", "Compassionate", "Idealistic", "Creative", "Principled", "Determined", "Visionary", "Dedicated"]
+            },
+            "INTJ": {
+                title: "The Mastermind",
+                description: "INTJs are independent, strategic, and innovative. They excel at analyzing complex problems, making long-term plans, and continuously pursuing knowledge and improvement. They value efficiency and logic.",
+                characteristics: ["Strategic", "Independent", "Decisive", "Innovative", "Analytical", "Excellence-driven", "Confident", "Knowledgeable"]
+            },
+            "ISTP": {
+                title: "The Craftsman",
+                description: "ISTPs are practical, adaptable, and independent. They excel at solving immediate problems, enjoy understanding how things work, and prefer environments with freedom. They focus on efficiency and practicality.",
+                characteristics: ["Calm", "Practical", "Adaptable", "Independent", "Logical", "Observant", "Flexible", "Hands-on"]
+            },
+            "ISFP": {
+                title: "The Composer",
+                description: "ISFPs are gentle, sensitive, and artistic. They value personal freedom, appreciate beauty and harmony, and live in the present. They're friendly to people but need personal space for self-expression.",
+                characteristics: ["Artistic", "Sensitive", "Peaceful", "Authentic", "Adaptable", "Experience-focused", "Practical", "Kind"]
+            },
+            "INFP": {
+                title: "The Healer",
+                description: "INFPs are idealistic, compassionate, and creative. They value inner harmony and personal growth, have deep understanding of human potential, and are dedicated to helping others achieve self-fulfillment.",
+                characteristics: ["Idealistic", "Compassionate", "Creative", "Authentic", "Adaptable", "Harmonious", "Deep", "Imaginative"]
+            },
+            "INTP": {
+                title: "The Architect",
+                description: "INTPs are logical, analytical, and innovative. They enjoy exploring theoretical concepts, seek to understand the world's essence, and continuously question and reassess existing ideas.",
+                characteristics: ["Innovative", "Analytical", "Curious", "Independent", "Logical", "Adaptable", "Theoretical", "Objective"]
+            },
+            "ESTP": {
+                title: "The Dynamo",
+                description: "ESTPs are energetic, practical, and adaptable. They enjoy action and adventure, excel in handling emergencies, and focus on immediate problems. They're social, pragmatic, and resourceful.",
+                characteristics: ["Energetic", "Adventurous", "Adaptable", "Practical", "Decisive", "Quick-thinking", "Sociable", "Observant"]
+            },
+            "ESFP": {
+                title: "The Performer",
+                description: "ESFPs are outgoing, friendly, and life-loving. They enjoy interacting with people, living in the moment, and bringing joy and energy to those around them. They're practical, adaptable, and experience-focused.",
+                characteristics: ["Outgoing", "Friendly", "Fun-loving", "Spontaneous", "Adaptable", "Practical", "Observant", "Cooperative"]
+            },
+            "ENFP": {
+                title: "The Champion",
+                description: "ENFPs are enthusiastic, creative, and socially skilled. They see possibilities, excel at motivating others, and seek authenticity and growth. They're flexible, spontaneous, and innovation-focused.",
+                characteristics: ["Enthusiastic", "Creative", "Imaginative", "Adaptable", "People-oriented", "Curious", "Flexible", "Idealistic"]
+            },
+            "ENTP": {
+                title: "The Debater",
+                description: "ENTPs are innovative, clever, and energetic. They enjoy intellectual challenges, excel at finding new solutions, and constantly question conventional thinking. They're adaptable and enjoy debates.",
+                characteristics: ["Innovative", "Analytical", "Adaptable", "Debating", "Clever", "Curious", "Knowledgeable", "Energetic"]
+            },
+            "ESTJ": {
+                title: "The Supervisor",
+                description: "ESTJs are organized, responsible, and practical. They value tradition and order, excel at planning and execution, and ensure tasks are completed efficiently. They're direct, logical, and results-focused.",
+                characteristics: ["Organized", "Responsible", "Practical", "Decisive", "Direct", "Logical", "Efficient", "Traditional"]
+            },
+            "ESFJ": {
+                title: "The Provider",
+                description: "ESFJs are friendly, cooperative, and harmony-valuing. They care about others' needs, work to create positive environments, and respect traditions and social norms. They're practical and reliable.",
+                characteristics: ["Friendly", "Cooperative", "Caring", "Practical", "Responsible", "Organized", "Traditional", "Harmonious"]
+            },
+            "ENFJ": {
+                title: "The Teacher",
+                description: "ENFJs are compassionate, influential, and organized. They value interpersonal harmony, excel at inspiring others to reach their potential, and are dedicated to positive social change.",
+                characteristics: ["Compassionate", "Influential", "Organized", "Loyal", "Idealistic", "Responsible", "Communicative", "Cooperative"]
+            },
+            "ENTJ": {
+                title: "The Commander",
+                description: "ENTJs are decisive, strategic, and leadership-oriented. They see long-term goals, create effective plans, and mobilize resources to achieve objectives. They're direct, logical, and efficiency-focused.",
+                characteristics: ["Decisive", "Strategic", "Leadership-oriented", "Confident", "Direct", "Efficient", "Organized", "Visionary"]
+            }
+        };
+        
+        // Emotion categories - consistent with backend
+        const EMOTION_CATEGORIES = ['Anger', 'Anger', 'Confusion', 'Confusion', 'Contempt', 'Contempt', 
+                                   'Disgust', 'Disgust', 'Happiness', 'Happiness', 'Neutral', 'Neutral', 
+                                   'Sadness', 'Sadness', 'Surprise', 'Surprise'];
+        
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up button event listeners
+            document.getElementById('start-test').addEventListener('click', startTest);
+            document.getElementById('next-question').addEventListener('click', nextQuestion);
+            document.getElementById('finish-test').addEventListener('click', finishTest);
+            
+            // Initialize speech recognition
+            initSpeechRecognition();
+            
+            // Select random questions
+            selectRandomQuestions();
+            
+            // Initialize progress indicator
+            initProgressIndicator();
+        });
+        
+        // Select random questions
+        function selectRandomQuestions() {
+            // Ensure we have at least one question from each dimension
+            const dimensions = ["I/E", "S/N", "T/F", "J/P"];
+            selectedQuestions = [];
+            
+            // Select one question from each dimension
+            for (const dimension of dimensions) {
+                const questionsForDimension = mbtiQuestions.filter(q => q.dimension === dimension);
+                const randomIndex = Math.floor(Math.random() * questionsForDimension.length);
+                const selectedQuestion = questionsForDimension[randomIndex];
+                selectedQuestions.push(selectedQuestion);
+            }
+            
+            // We only need 3 questions, so remove one random dimension
+            const randomDimensionToRemove = Math.floor(Math.random() * dimensions.length);
+            selectedQuestions.splice(randomDimensionToRemove, 1);
+            
+            // Sort questions by ID for consistent ordering
+            selectedQuestions.sort((a, b) => a.id - b.id);
+            
+            // Re-assign IDs for the selected questions
+            selectedQuestions.forEach((q, index) => {
+                q.displayId = index + 1;
+            });
+            
+            // Initialize questions based on the random selection
+            initQuestions();
+        }
+        
+        // Initialize questions
+        function initQuestions() {
+            const questionsContainer = document.getElementById('questions-container');
+            questionsContainer.innerHTML = '';
+            
+            // Create question elements
+            selectedQuestions.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.id = `question-${q.displayId}`;
+                questionElem.className = index === 0 ? 'question current-question' : 'question';
+                questionElem.style.display = index === 0 ? 'block' : 'none';
+                
+                const questionHeading = document.createElement('h3');
+                questionHeading.textContent = `Question ${q.displayId}: ${q.question}`;
+                
+                const questionDesc = document.createElement('p');
+                questionDesc.textContent = q.description;
+                
+                questionElem.appendChild(questionHeading);
+                questionElem.appendChild(questionDesc);
+                questionsContainer.appendChild(questionElem);
+            });
+        }
+        
+        // Initialize progress indicator
+        function initProgressIndicator() {
+            const progressIndicator = document.getElementById('progress-indicator');
+            progressIndicator.innerHTML = '';
+            
+            // Create progress indicator steps
+            for (let i = 0; i < totalQuestions; i++) {
+                const step = document.createElement('div');
+                step.className = i === 0 ? 'progress-step active' : 'progress-step';
+                step.textContent = i + 1;
+                progressIndicator.appendChild(step);
+            }
+        }
+        
+        // Start test
+        function startTest() {
+            // Show test container
+            document.getElementById('test-container').style.display = 'block';
+            // Hide start button
+            document.getElementById('start-test').style.display = 'none';
+            
+            // Initialize video capture
+            initVideoCapture();
+            
+            // Start speech recognition
+            startSpeechRecognition();
+            
+            testStarted = true;
+            
+            // Reset speech text for the first question
+            currentSpeechText = '';
+            
+            // Initialize the first question's response
+            responses[0] = {
+                questionIndex: 0,
+                questionDimension: selectedQuestions[0].dimension,
+                text: '',
+                emotionData: []
+            };
+            
+            // Enable "Next Question" button after 10 seconds
+            setTimeout(() => {
+                document.getElementById('next-question').disabled = false;
+            }, 10000);
+        }
+        
+        // Initialize video capture
+        function initVideoCapture() {
+            // Request camera access
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    
+                    // Set timer to capture video frames and analyze emotions
+                    setInterval(captureAndAnalyze, 1000); // Capture once per second
+                })
+                .catch(err => {
+                    console.error("Error accessing camera: ", err);
+                    alert("Unable to access your camera. Please check permission settings.");
+                });
+        }
+        
+        // Capture video frames and analyze emotions
+        function captureAndAnalyze() {
+            if (!testStarted) return;
+            
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw video frame to canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas to base64 image
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            // Send image for emotion analysis
+            fetch('/api/process_frame', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error analyzing emotions: ", data.error);
+                    return;
+                }
+                
+                // Update face detection status
+                updateFaceDetectionStatus(data.face_detected);
+                
+                // Extract emotion data
+                latestEmotions = data.emotions;
+                
+                // Update emotion probability display
+                updateEmotionProbabilities(latestEmotions);
+                
+                // Save emotion data to current question's response
+                if (responses[currentQuestion - 1]) {
+                    if (!responses[currentQuestion - 1].emotionData) {
+                        responses[currentQuestion - 1].emotionData = [];
+                    }
+                    responses[currentQuestion - 1].emotionData.push({
+                        timestamp: new Date().toISOString(),
+                        emotions: latestEmotions
+                    });
+                }
+            })
+            .catch(err => {
+                console.error("Error requesting emotion analysis: ", err);
+            });
+        }
+        
+        // Emotion to class mapping function
+        function getEmotionClass(emotionName) {
+          const emotionMap = {
+            'Happiness': 'emotion-happy',
+            'Happy': 'emotion-happy',
+            'Sadness': 'emotion-sad',
+            'Sad': 'emotion-sad',
+            'Anger': 'emotion-angry',
+            'Angry': 'emotion-angry',
+            'Neutral': 'emotion-neutral',
+            'Surprise': 'emotion-surprised',
+            'Surprised': 'emotion-surprised',
+            'Contempt': 'emotion-contempt',
+            'Disgust': 'emotion-disgust',
+            'Confusion': 'emotion-confused',
+            'Confused': 'emotion-confused'
+          };
+          
+          return emotionMap[emotionName] || 'emotion-neutral';
+        }
+        
+        // Update emotion probability display
+        function updateEmotionProbabilities(emotions) {
+            if (!emotions) return;
+            
+            const container = document.getElementById('emotion-probabilities');
+            container.innerHTML = '';
+            
+            // Sort emotions by probability from highest to lowest
+            const sortedEmotions = Object.entries(emotions)
+                .sort((a, b) => b[1] - a[1]);
+            
+            // Create probability bar for each emotion
+            sortedEmotions.forEach(([emotion, probability]) => {
+                const percentValue = (probability * 100).toFixed(1);
+                
+                const barContainer = document.createElement('div');
+                barContainer.className = 'probability-bar';
+                
+                const label = document.createElement('div');
+                label.className = 'probability-label';
+                label.textContent = emotion;
+                
+                const value = document.createElement('div');
+                value.className = 'probability-value';
+                value.textContent = `${percentValue}%`;
+                
+                const progress = document.createElement('div');
+                progress.className = 'probability-progress';
+                
+                const fill = document.createElement('div');
+                // Apply emotion-specific class
+                fill.className = `probability-fill ${getEmotionClass(emotion)}`;
+                fill.style.width = `${percentValue}%`;
+                
+                progress.appendChild(fill);
+                barContainer.appendChild(label);
+                barContainer.appendChild(value);
+                barContainer.appendChild(progress);
+                container.appendChild(barContainer);
+            });
+        }
+        
+        // Update face detection status
+        function updateFaceDetectionStatus(detected) {
+            const statusElem = document.getElementById('face-detection-status');
+            
+            if (detected) {
+                statusElem.textContent = "Face detected";
+                statusElem.className = "face-detection-status status-success";
+            } else {
+                statusElem.textContent = "No face detected";
+                statusElem.className = "face-detection-status status-warning";
+            }
+        }
+        
+        // Update speech status
+        function updateSpeechStatus(status) {
+            const microphoneStatus = document.getElementById('microphone-status');
+            const speechStatusText = document.getElementById('speech-status-text');
+            
+            if (status === 'active') {
+                microphoneStatus.className = 'microphone-status active';
+                speechStatusText.textContent = 'Recording speech';
+            } else if (status === 'paused') {
+                microphoneStatus.className = 'microphone-status';
+                speechStatusText.textContent = 'Speech recognition paused';
+            } else if (status === 'error') {
+                microphoneStatus.className = 'microphone-status';
+                speechStatusText.textContent = 'Speech recognition error';
+            } else {
+                microphoneStatus.className = 'microphone-status';
+                speechStatusText.textContent = 'Not recording';
+            }
+        }
+        
+        // Initialize speech recognition
+        function initSpeechRecognition() {
+            // Check browser support
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert("Your browser doesn't support speech recognition. Please use Chrome or Edge browser.");
+                return;
+            }
+            
+            // Create speech recognition object
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            speechRecognition = new SpeechRecognition();
+            
+            // Set parameters
+            speechRecognition.continuous = true;  // Continuous recognition
+            speechRecognition.interimResults = true;  // Return interim results
+            speechRecognition.lang = 'en-US';  // Set language to English
+            
+            // Event handling
+            speechRecognition.onstart = function() {
+                isRecognizing = true;
+                updateSpeechStatus('active');
+                
+                // Initialize speech output for new questions
+                if (currentQuestion !== 0 && !currentSpeechText) {
+                    document.getElementById('speech-output').innerHTML = '<p class="blinking">Listening to your voice...</p>';
+                }
+            };
+            
+            speechRecognition.onend = function() {
+                isRecognizing = false;
+                updateSpeechStatus('paused');
+                
+                if (testStarted) {
+                    // If test is in progress, restart speech recognition
+                    try {
+                        speechRecognition.start();
+                    } catch (e) {
+                        console.error("Failed to restart speech recognition:", e);
+                        setTimeout(() => {
+                            try {
+                                speechRecognition.start();
+                            } catch (err) {
+                                console.error("Second attempt to restart speech recognition failed:", err);
+                            }
+                        }, 1000);
+                    }
+                }
+            };
+            
+            speechRecognition.onresult = function(event) {
+                let interimTranscript = '';
+                let finalTranscript = '';
+                
+                // Collect all results
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                // Add final transcript to the accumulated speech text
+                if (finalTranscript) {
+                    currentSpeechText += finalTranscript;
+                }
+                
+                // Display speech recognition results
+                const displayText = currentSpeechText + interimTranscript;
+                document.getElementById('speech-output').innerHTML = `<p>${displayText}</p>`;
+                
+                // Update current question's response with accumulated text
+                if (responses[currentQuestion - 1]) {
+                    responses[currentQuestion - 1].text = displayText;
+                }
+                
+                // If there's a final result, analyze the accumulated text
+                if (finalTranscript) {
+                    analyzeSpeech(currentSpeechText);
+                }
+            };
+            
+            speechRecognition.onerror = function(event) {
+                console.error("Speech recognition error: ", event.error);
+                updateSpeechStatus('error');
+                
+                // Try to restart
+                if (testStarted && !isRecognizing) {
+                    setTimeout(() => {
+                        try {
+                            speechRecognition.start();
+                        } catch (e) {
+                            console.error("Failed to restart speech recognition: ", e);
+                        }
+                    }, 1000);
+                }
+            };
+        }
+        
+        // Start speech recognition
+        function startSpeechRecognition() {
+            if (!speechRecognition) {
+                alert("Speech recognition not initialized. Please check browser compatibility.");
+                return;
+            }
+            
+            try {
+                speechRecognition.start();
+            } catch (e) {
+                console.error("Failed to start speech recognition: ", e);
+                alert("Failed to start speech recognition: " + e.message);
+            }
+        }
+        
+        // Stop speech recognition
+        function stopSpeechRecognition() {
+            if (speechRecognition && isRecognizing) {
+                speechRecognition.stop();
+            }
+        }
+        
+        // Analyze speech text
+        function analyzeSpeech(speechText) {
+            if (!speechText.trim()) return;
+            
+            // Send speech text for MBTI analysis
+            fetch('/api/process_speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ speech_text: speechText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error analyzing speech text: ", data.error);
+                    return;
+                }
+                
+                // Update current question's response
+                if (!responses[currentQuestion - 1]) {
+                    responses[currentQuestion - 1] = {
+                        questionIndex: currentQuestion - 1,
+                        questionDimension: selectedQuestions[currentQuestion - 1].dimension,
+                        text: speechText,
+                        mbtiResults: data.mbti_results,
+                        emotionData: []
+                    };
+                } else {
+                    responses[currentQuestion - 1].mbtiResults = data.mbti_results;
+                    // Ensure the text is updated with the latest version
+                    responses[currentQuestion - 1].text = speechText;
+                }
+            })
+            .catch(err => {
+                console.error("Error requesting speech text analysis: ", err);
+            });
+        }
+        
+        // Move to next question
+        function nextQuestion() {
+            // Save current question's complete response
+            const currentText = document.getElementById('speech-output').innerText;
+            
+            // Ensure we're saving the complete text
+            if (!responses[currentQuestion - 1]) {
+                responses[currentQuestion - 1] = {
+                    questionIndex: currentQuestion - 1,
+                    questionDimension: selectedQuestions[currentQuestion - 1].dimension,
+                    text: currentText,
+                    emotionData: []
+                };
+            } else {
+                // Make sure to update the text with the complete version
+                responses[currentQuestion - 1].text = currentText;
+            }
+            
+            // Analyze current text one final time before moving on
+            analyzeSpeech(currentText);
+            
+            // Hide current question
+            document.getElementById(`question-${currentQuestion}`).style.display = 'none';
+            
+            // Update progress indicator
+            const progressSteps = document.getElementsByClassName('progress-step');
+            progressSteps[currentQuestion - 1].classList.remove('active');
+            progressSteps[currentQuestion - 1].classList.add('completed');
+            
+            // Advance to next question
+            currentQuestion++;
+            
+            // Reset speech text for the next question
+            currentSpeechText = '';
+            
+            if (currentQuestion <= totalQuestions) {
+                // Show next question
+                document.getElementById(`question-${currentQuestion}`).style.display = 'block';
+                progressSteps[currentQuestion - 1].classList.add('active');
+                
+                // Reset speech output
+                document.getElementById('speech-output').innerHTML = '<p>Please speak into the microphone to answer the question...</p>';
+                
+                // Initialize the next question's response
+                responses[currentQuestion - 1] = {
+                    questionIndex: currentQuestion - 1,
+                    questionDimension: selectedQuestions[currentQuestion - 1].dimension,
+                    text: '',
+                    emotionData: []
+                };
+                
+                // If it's the last question, change button
+                if (currentQuestion === totalQuestions) {
+                    document.getElementById('next-question').style.display = 'none';
+                    document.getElementById('finish-test').style.display = 'inline-block';
+                }
+                
+                // Disable next question button, enable after 10 seconds
+                document.getElementById('next-question').disabled = true;
+                setTimeout(() => {
+                    document.getElementById('next-question').disabled = false;
+                }, 10000);
+            }
+        }
+        
+        // Complete test
+        function finishTest() {
+            // Save last question's complete response
+            const currentText = document.getElementById('speech-output').innerText;
+            
+            // Ensure we're saving the complete text
+            if (!responses[currentQuestion - 1]) {
+                responses[currentQuestion - 1] = {
+                    questionIndex: currentQuestion - 1,
+                    questionDimension: selectedQuestions[currentQuestion - 1].dimension,
+                    text: currentText,
+                    emotionData: []
+                };
+            } else {
+                // Make sure to update the text with the complete version
+                responses[currentQuestion - 1].text = currentText;
+            }
+            
+            // Analyze current text one final time
+            analyzeSpeech(currentText);
+            
+            // Update progress indicator
+            const progressSteps = document.getElementsByClassName('progress-step');
+            progressSteps[currentQuestion - 1].classList.remove('active');
+            progressSteps[currentQuestion - 1].classList.add('completed');
+            
+            // Stop test
+            testStarted = false;
+            stopSpeechRecognition();
+            
+            // Generate final results
+            setTimeout(() => {
+                // Add a small delay to allow the final speech analysis to complete
+                generateFinalResults();
+            }, 1000);
+        }
+        
+        // Generate final assessment results
+        function generateFinalResults() {
+            // Send all responses for final MBTI prediction
+            fetch('/api/final_results', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ responses: responses })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error generating final results: ", data.error);
+                    return;
+                }
+                
+                // Show result container
+                document.getElementById('result-container').style.display = 'block';
+                
+                // Hide test container
+                document.getElementById('test-container').style.display = 'none';
+                
+                // Display final MBTI results
+                displayFinalResults(data);
+            })
+            .catch(err => {
+                console.error("Error requesting final results: ", err);
+            });
+        }
+        
+        // Display final results
+        function displayFinalResults(finalData) {
+            const resultContainer = document.getElementById('mbti-result');
+            const detailsContainer = document.getElementById('dimension-details');
+            const descriptionContainer = document.getElementById('mbti-description');
+            
+            if (!finalData || !finalData.mbti_type) {
+                resultContainer.innerHTML = '<p>Unable to generate final MBTI analysis results</p>';
+                return;
+            }
+            
+            const mbtiType = finalData.mbti_type;
+            
+            // Create MBTI result HTML
+            resultContainer.innerHTML = `
+                <h3>Your MBTI Type is: ${mbtiType}</h3>
+                <p>This indicates your personality type is:
+                ${mbtiType[0] === 'I' ? 'Introversion' : 'Extraversion'},
+                ${mbtiType[1] === 'S' ? 'Sensing' : 'iNtuition'},
+                ${mbtiType[2] === 'T' ? 'Thinking' : 'Feeling'},
+                ${mbtiType[3] === 'J' ? 'Judging' : 'Perceiving'}
+                </p>
+            `;
+            
+            // Create dimension details HTML
+            let detailsHtml = '<h3>Dimension Details:</h3><div class="dimension-bars">';
+            
+            // Add dimension scores
+            for (const [dimension, scores] of Object.entries(finalData.dimension_scores)) {
+                let [score1, score2] = scores;
+                // Ensure they're numbers
+                score1 = parseFloat(score1) * 100;
+                score2 = parseFloat(score2) * 100;
+                
+                let dimensionLabel = '';
+                if (dimension === 'I/E') dimensionLabel = 'Introversion vs Extraversion';
+                else if (dimension === 'S/N') dimensionLabel = 'Sensing vs Intuition';
+                else if (dimension === 'T/F') dimensionLabel = 'Thinking vs Feeling';
+                else if (dimension === 'J/P') dimensionLabel = 'Judging vs Perceiving';
+                
+                detailsHtml += `
+                    <div class="dimension-item">
+                        <h4>${dimensionLabel}</h4>
+                        <div class="probability-bar">
+                            <div class="probability-label">${dimension.split('/')[0]}</div>
+                            <div class="probability-value">${score1.toFixed(1)}%</div>
+                            <div class="probability-progress">
+                                <div class="probability-fill" style="width: ${score1.toFixed(1)}%; background: linear-gradient(to right, var(--primary-sage), var(--accent-sage-dark));"></div>
+                            </div>
+                        </div>
+                        <div class="probability-bar">
+                            <div class="probability-label">${dimension.split('/')[1]}</div>
+                            <div class="probability-value">${score2.toFixed(1)}%</div>
+                            <div class="probability-progress">
+                                <div class="probability-fill" style="width: ${score2.toFixed(1)}%; background: linear-gradient(to right, var(--primary-sky), var(--accent-sky-dark));"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            detailsHtml += '</div>';
+            
+            // Update container
+            detailsContainer.innerHTML = detailsHtml;
+            
+            // Add MBTI detailed description
+            const typeDescription = mbtiDescriptions[mbtiType] || { 
+                title: "Undefined", 
+                description: "No description available", 
+                characteristics: [] 
+            };
+            
+            let descHtml = `
+                <h3>${mbtiType} - ${typeDescription.title}</h3>
+                <p>${typeDescription.description}</p>
+                <h4>Key Characteristics:</h4>
+                <div class="mbti-characteristics">
+            `;
+            
+            // Add characteristic labels
+            typeDescription.characteristics.forEach(trait => {
+                descHtml += `<span class="characteristic">${trait}</span>`;
+            });
+            
+            descHtml += '</div>';
+            
+            // Add dimension detailed explanations
+            descHtml += `
+                <h4>Your Dimension Explanations:</h4>
+                <ul>
+                    <li><strong>${mbtiType[0] === 'I' ? 'Introversion (I)' : 'Extraversion (E)'}</strong>: ${
+                        mbtiType[0] === 'I' 
+                        ? 'You tend to gain energy from solitude, enjoy deep thinking, and typically think before acting. You likely prefer smaller social settings and one-on-one interactions.' 
+                        : 'You tend to gain energy from social interactions, enjoy engaging with others, and typically think while acting. You likely prefer larger social gatherings and group activities.'
+                    }</li>
+                    <li><strong>${mbtiType[1] === 'S' ? 'Sensing (S)' : 'Intuition (N)'}</strong>: ${
+                        mbtiType[1] === 'S' 
+                        ? 'You tend to focus on concrete facts and details, value practical experience, and trust information gathered through your five senses. You typically focus on reality and practicality.' 
+                        : 'You tend to focus on concepts and possibilities, look for patterns and connections, and trust insights and intuition. You typically focus on innovation and future-orientation.'
+                    }</li>
+                    <li><strong>${mbtiType[2] === 'T' ? 'Thinking (T)' : 'Feeling (F)'}</strong>: ${
+                        mbtiType[2] === 'T' 
+                        ? 'When making decisions, you tend to use logic and objective analysis, prioritize fairness and consistency, and may place emotional factors as secondary.' 
+                        : 'When making decisions, you tend to consider relationships and values, prioritize harmony and personal impact, and typically incorporate emotional factors into consideration.'
+                    }</li>
+                    <li><strong>${mbtiType[3] === 'J' ? 'Judging (J)' : 'Perceiving (P)'}</strong>: ${
+                        mbtiType[3] === 'J' 
+                        ? 'You prefer an ordered, structured lifestyle, tend to plan and organize, and value certainty and decisions. You typically complete tasks on time and prefer planned actions.' 
+                        : 'You prefer a flexible, spontaneous lifestyle, tend to keep options open, and adapt to change. You typically enjoy exploration and new experiences, and prefer impromptu actions.'
+                    }</li>
+                </ul>
+            `;
+            
+            // Add career and development suggestions
+            descHtml += `
+                <h4>Career & Development Suggestions:</h4>
+                <p>Based on your MBTI type ${mbtiType}, here are some potential career directions and personal development suggestions:</p>
+            `;
+            
+            // Provide specific suggestions based on MBTI type
+            switch(mbtiType) {
+                case 'ISTJ':
+                    descHtml += `
+                        <p>Potential career paths: Accountant, Legal Specialist, Project Manager, Systems Analyst, Data Analyst, Quality Control Specialist, Auditor, and other roles requiring precision, reliability, and systematic work.</p>
+                        <p>Development suggestions: Try to cultivate more innovative thinking, accept new perspectives, occasionally relax strict adherence to rules, and enhance adaptability to change.</p>
+                    `;
+                    break;
+                case 'ISFJ':
+                    descHtml += `
+                        <p>Potential career paths: Nurse, Teacher, Administrative Assistant, HR Specialist, Customer Service Representative, Social Worker, Librarian, and other roles requiring careful attention and support for others.</p>
+                        <p>Development suggestions: Learn to set personal boundaries, avoid over-sacrificing yourself, practice expressing your needs, and occasionally expand your horizons by trying new things.</p>
+                    `;
+                    break;
+                case 'INFJ':
+                    descHtml += `
+                        <p>Potential career paths: Counselor, Writer, Editor, HR Development Specialist, Social Worker, Non-profit Manager, and other roles requiring insight and creativity.</p>
+                        <p>Development suggestions: Avoid perfectionism, learn to accept imperfections in yourself and others, develop practical skills to balance idealism, and be careful to avoid emotional burnout.</p>
+                    `;
+                    break;
+                case 'INTJ':
+                    descHtml += `
+                        <p>Potential career paths: Scientist, Engineer, Financial Analyst, Strategic Consultant, Researcher, Systems Designer, Entrepreneur, and other roles requiring strategic thinking and independent work.</p>
+                        <p>Development suggestions: Cultivate emotional intelligence and communication skills, practice listening to others and expressing feelings, enhance teamwork abilities, and allow yourself to occasionally make mistakes and try new things.</p>
+                    `;
+                    break;
+                case 'ISTP':
+                    descHtml += `
+                        <p>Potential career paths: Mechanic, Engineer, Electronics Technician, Pilot, Software Developer, Forensic Scientist, and other roles requiring hands-on abilities and practical problem-solving.</p>
+                        <p>Development suggestions: Develop long-term planning skills, enhance emotional expression and interpersonal skills, practice setting and maintaining long-term goals, and increase tolerance for structure and planning.</p>
+                    `;
+                    break;
+                // Add suggestions for other types as needed
+                default:
+                    descHtml += `
+                        <p>We recommend consulting with a professional MBTI counselor for more targeted career and development suggestions.</p>
+                    `;
+            }
+            
+            // Add speech transcripts section
+            descHtml += `
+                <h4>Your Responses:</h4>
+                <div class="user-responses">
+            `;
+            
+            // Add each question and user's response
+            selectedQuestions.forEach((question, index) => {
+                const response = responses[index];
+                const userText = response ? response.text : "No response recorded";
+                
+                descHtml += `
+                    <div class="user-response-item">
+                        <h5>Question ${index + 1}: ${question.question}</h5>
+                        <p><strong>Your response:</strong> "${userText}"</p>
+                    </div>
+                `;
+            });
+            
+            descHtml += '</div>';
+            
+            // Update MBTI description container
+            descriptionContainer.innerHTML = descHtml;
+        }
+    </script>
+</body>
+</html>
