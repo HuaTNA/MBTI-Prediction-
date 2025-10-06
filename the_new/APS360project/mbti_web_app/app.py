@@ -859,9 +859,17 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # 设置模型文件路径
-BASE_DIR = r"C:\Users\lnasl\Desktop\APS360project\mbti_web_app\models"
+# 设置模型文件路径
+BASE_DIR = r"C:\APS360_project\MBTI-Prediction-\the_new\APS360project\mbti_web_app\models"
+
+# 情感识别模型 (PyTorch)
 EMOTION_MODEL_PATH = os.path.join(BASE_DIR, "emotion", "improved_emotion_model.pth")
+
+# 文本 MBTI 模型 (Scikit-learn)
 TEXT_MODEL_DIR = os.path.join(BASE_DIR, "text", "ml")
+TEXT_MODEL_PATH = os.path.join(TEXT_MODEL_DIR, "model.pkl")
+TEXT_VECTORIZER_PATH = os.path.join(TEXT_MODEL_DIR, "vectorizer.pkl")
+TEXT_LABEL_ENCODER_PATH = os.path.join(TEXT_MODEL_DIR, "label_encoder.pkl")
 
 # 定义情绪类别
 EMOTION_CATEGORIES = ['Anger', 'Confusion', 'Contempt', 'Disgust', 

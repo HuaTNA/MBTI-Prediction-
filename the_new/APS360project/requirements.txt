@@ -1,0 +1,15 @@
+# Core numerical and ML libraries
+numpy
+torch
+torchvision
+
+# Image and video processing
+opencv-python
+mediapipe
+Pillow
+
+# Web framework
+flask
+
+# (Optional) developer utilities
+logging
