@@ -1,0 +1,264 @@
+{
+  "version": "1.0",
+  "language": "en",
+  "last_updated": "2026-02-05",
+  "description": "MBTI personality type descriptions - English version",
+  "types": {
+    "ISTJ": {
+      "title": "The Inspector",
+      "description": "ISTJs are practical, disciplined, and reliable. They focus on details, are responsible, and excel at organizing and systematizing work. They follow tradition and rules, valuing order and structure.",
+      "characteristics": [
+        "Responsible",
+        "Reliable",
+        "Practical",
+        "Organized",
+        "Traditional",
+        "Logical",
+        "Detail-oriented",
+        "Loyal"
+      ],
+      "career_paths": "Accountant, Project Manager, Systems Analyst, Quality Control Specialist, Auditor, and other roles requiring attention to detail and systematic approaches.",
+      "development_suggestions": "Practice flexibility and adaptability, explore creative thinking methods, pay attention to others' emotional needs, and learn to appreciate different perspectives."
+    },
+    "ISFJ": {
+      "title": "The Protector",
+      "description": "ISFJs are thoughtful, loyal, and responsible. They quietly care for others' needs, pay attention to details, and create harmonious environments. They value tradition and security.",
+      "characteristics": [
+        "Loyal",
+        "Considerate",
+        "Kind",
+        "Responsible",
+        "Traditional",
+        "Practical",
+        "Patient",
+        "Detail-oriented"
+      ],
+      "career_paths": "Nurse, Teacher, HR Specialist, Social Worker, Administrative Assistant, and other caring, service-oriented roles.",
+      "development_suggestions": "Learn to say 'no,' prioritize self-care, practice expressing your own needs, and be open to new ideas and changes."
+    },
+    "INFJ": {
+      "title": "The Counselor",
+      "description": "INFJs are insightful, idealistic, and creative. They seek depth and meaning, care about others' growth, and can envision future possibilities. They stand by their values and beliefs.",
+      "characteristics": [
+        "Insightful",
+        "Compassionate",
+        "Idealistic",
+        "Creative",
+        "Principled",
+        "Determined",
+        "Visionary",
+        "Dedicated"
+      ],
+      "career_paths": "Counselor, Psychologist, Writer, Teacher, Social Worker, and other roles focused on helping and understanding others.",
+      "development_suggestions": "Practice setting realistic expectations, take care of yourself while helping others, learn to accept imperfection, and develop practical implementation skills."
+    },
+    "INTJ": {
+      "title": "The Mastermind",
+      "description": "INTJs are independent, strategic, and innovative. They excel at analyzing complex problems, making long-term plans, and continuously pursuing knowledge and improvement. They value efficiency and logic.",
+      "characteristics": [
+        "Strategic",
+        "Independent",
+        "Decisive",
+        "Innovative",
+        "Analytical",
+        "Excellence-driven",
+        "Confident",
+        "Knowledgeable"
+      ],
+      "career_paths": "Engineer, Scientist, Strategic Consultant, Software Developer, Research Analyst, and other roles requiring strategic thinking and innovation.",
+      "development_suggestions": "Practice patience with others' learning pace, develop emotional intelligence, learn to appreciate team contributions, and balance perfectionism with practicality."
+    },
+    "ISTP": {
+      "title": "The Craftsperson",
+      "description": "ISTPs are analytical, practical, and adaptable. They excel at solving immediate problems, enjoy hands-on work, and value independence and efficiency.",
+      "characteristics": [
+        "Analytical",
+        "Practical",
+        "Independent",
+        "Flexible",
+        "Calm",
+        "Logical",
+        "Observant",
+        "Efficient"
+      ],
+      "career_paths": "Mechanic, Engineer, IT Specialist, Pilot, Emergency Responder, and other technical, hands-on roles.",
+      "development_suggestions": "Develop long-term planning skills, practice expressing emotions, consider others' feelings in decision-making, and enhance communication abilities."
+    },
+    "ISFP": {
+      "title": "The Composer",
+      "description": "ISFPs are gentle, creative, and harmonious. They value beauty and authenticity, live in the moment, and respect others' values and feelings.",
+      "characteristics": [
+        "Gentle",
+        "Creative",
+        "Artistic",
+        "Flexible",
+        "Harmonious",
+        "Modest",
+        "Present-focused",
+        "Sensitive"
+      ],
+      "career_paths": "Artist, Designer, Musician, Beautician, Counselor, and other roles involving creativity and aesthetics.",
+      "development_suggestions": "Develop assertiveness in expressing your needs, practice long-term planning, learn to handle criticism constructively, and enhance time management skills."
+    },
+    "INFP": {
+      "title": "The Healer",
+      "description": "INFPs are idealistic, creative, and empathetic. They seek meaning and authenticity, care about values and personal growth, and strive to help others realize their potential.",
+      "characteristics": [
+        "Idealistic",
+        "Empathetic",
+        "Creative",
+        "Principled",
+        "Authentic",
+        "Flexible",
+        "Curious",
+        "Loyal"
+      ],
+      "career_paths": "Writer, Psychologist, Teacher, Artist, Social Worker, and other roles involving creativity and helping others.",
+      "development_suggestions": "Practice setting realistic goals, develop decision-making confidence, learn to handle criticism, and balance idealism with practicality."
+    },
+    "INTP": {
+      "title": "The Architect",
+      "description": "INTPs are logical, analytical, and innovative. They seek to understand complex systems, enjoy theoretical exploration, and value intellectual precision and independence.",
+      "characteristics": [
+        "Analytical",
+        "Logical",
+        "Independent",
+        "Curious",
+        "Innovative",
+        "Objective",
+        "Flexible",
+        "Precise"
+      ],
+      "career_paths": "Researcher, Programmer, Philosopher, Mathematician, Analyst, and other roles requiring deep thinking and problem-solving.",
+      "development_suggestions": "Practice completing projects, develop social and communication skills, learn to consider emotional factors, and enhance time management abilities."
+    },
+    "ESTP": {
+      "title": "The Dynamo",
+      "description": "ESTPs are energetic, practical, and adaptable. They enjoy action and adventure, excel in handling emergencies, and focus on immediate problems. They're social, pragmatic, and resourceful.",
+      "characteristics": [
+        "Energetic",
+        "Adventurous",
+        "Adaptable",
+        "Practical",
+        "Decisive",
+        "Quick-thinking",
+        "Sociable",
+        "Observant"
+      ],
+      "career_paths": "Entrepreneur, Sales Representative, Marketing Specialist, Emergency Responder, Sports Coach, and other action-oriented roles.",
+      "development_suggestions": "Develop patience for longer-term planning, practice listening to others completely before responding, consider long-term consequences, and enhance follow-through abilities."
+    },
+    "ESFP": {
+      "title": "The Performer",
+      "description": "ESFPs are outgoing, friendly, and life-loving. They enjoy interacting with people, living in the moment, and bringing joy and energy to those around them. They're practical, adaptable, and experience-focused.",
+      "characteristics": [
+        "Outgoing",
+        "Friendly",
+        "Fun-loving",
+        "Spontaneous",
+        "Adaptable",
+        "Practical",
+        "Observant",
+        "Cooperative"
+      ],
+      "career_paths": "Event Planner, Sales Representative, Tour Guide, Entertainer, Customer Service Specialist, and other people-facing roles.",
+      "development_suggestions": "Develop patience for details and administrative tasks, practice long-term planning, enhance your ability to say 'no,' and consider long-term implications."
+    },
+    "ENFP": {
+      "title": "The Champion",
+      "description": "ENFPs are enthusiastic, creative, and socially skilled. They see possibilities, excel at motivating others, and seek authenticity and growth. They're flexible, spontaneous, and innovation-focused.",
+      "characteristics": [
+        "Enthusiastic",
+        "Creative",
+        "Imaginative",
+        "Adaptable",
+        "People-oriented",
+        "Curious",
+        "Flexible",
+        "Idealistic"
+      ],
+      "career_paths": "Marketing Specialist, Counselor, Teacher, Writer, Journalist, Entrepreneur, and other creative, people-oriented roles.",
+      "development_suggestions": "Enhance focus and follow-through on projects, develop systems for time management, practice realistic planning, and learn to prioritize tasks."
+    },
+    "ENTP": {
+      "title": "The Debater",
+      "description": "ENTPs are innovative, clever, and energetic. They enjoy intellectual challenges, excel at finding new solutions, and constantly question conventional thinking. They're adaptable and enjoy debates.",
+      "characteristics": [
+        "Innovative",
+        "Clever",
+        "Energetic",
+        "Curious",
+        "Challenging",
+        "Adaptable",
+        "Strategic",
+        "Resourceful"
+      ],
+      "career_paths": "Entrepreneur, Consultant, Attorney, Inventor, Strategic Planner, and other roles requiring innovation and strategic thinking.",
+      "development_suggestions": "Practice follow-through on projects, develop sensitivity to others' feelings, learn to focus on one task at a time, and enhance attention to details."
+    },
+    "ESTJ": {
+      "title": "The Supervisor",
+      "description": "ESTJs are organized, practical, and decisive. They excel at managing, implementing plans, and maintaining order and efficiency. They value tradition, responsibility, and clear standards.",
+      "characteristics": [
+        "Organized",
+        "Practical",
+        "Decisive",
+        "Responsible",
+        "Traditional",
+        "Direct",
+        "Loyal",
+        "Hardworking"
+      ],
+      "career_paths": "Manager, Administrator, Military Officer, Financial Officer, Project Manager, and other leadership and management roles.",
+      "development_suggestions": "Practice flexibility and openness to new ideas, develop empathy and emotional awareness, learn to delegate and trust others, and balance task focus with relationship building."
+    },
+    "ESFJ": {
+      "title": "The Provider",
+      "description": "ESFJs are warm, responsible, and cooperative. They care about others' needs, excel at creating harmony, and value tradition and social order. They're practical helpers and organizers.",
+      "characteristics": [
+        "Warm",
+        "Responsible",
+        "Cooperative",
+        "Organized",
+        "Loyal",
+        "Practical",
+        "Traditional",
+        "Caring"
+      ],
+      "career_paths": "Teacher, Nurse, HR Manager, Event Coordinator, Office Manager, and other service and organization-oriented roles.",
+      "development_suggestions": "Learn to prioritize your own needs, practice accepting criticism without taking it personally, develop comfort with conflict, and be open to change and new approaches."
+    },
+    "ENFJ": {
+      "title": "The Teacher",
+      "description": "ENFJs are charismatic, empathetic, and inspiring. They excel at understanding others, motivating people, and facilitating growth. They value harmony, authenticity, and positive impact.",
+      "characteristics": [
+        "Charismatic",
+        "Empathetic",
+        "Inspiring",
+        "Organized",
+        "Idealistic",
+        "Diplomatic",
+        "Warm",
+        "Persuasive"
+      ],
+      "career_paths": "Teacher, Counselor, HR Developer, Public Relations Specialist, Sales Trainer, and other roles involving helping and developing others.",
+      "development_suggestions": "Practice setting boundaries, take time for self-care, learn to accept criticism, and balance others' needs with your own."
+    },
+    "ENTJ": {
+      "title": "The Commander",
+      "description": "ENTJs are strategic, decisive, and natural leaders. They excel at long-term planning, organizing resources, and implementing efficient systems. They value competence, logic, and achievement.",
+      "characteristics": [
+        "Strategic",
+        "Decisive",
+        "Confident",
+        "Organized",
+        "Ambitious",
+        "Efficient",
+        "Logical",
+        "Leadership-oriented"
+      ],
+      "career_paths": "CEO, Executive, Business Strategist, Attorney, Military Commander, and other leadership and strategic roles.",
+      "development_suggestions": "Practice patience with others' pace, develop emotional intelligence, learn to value process as much as results, and balance assertiveness with empathy."
+    }
+  }
+}

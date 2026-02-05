@@ -383,7 +383,7 @@ class MBTIIntegrationSystem:
         # T (thinking) correlates with Neutral, Anger, Contempt
         # F (feeling) correlates with Happiness, Sadness, Confusion, Disgust
         dimension_probabilities['T'] = emotion_probs[5] * 0.7 + emotion_probs[0] * 0.6 + emotion_probs[2] * 0.6
-        dimension_probabilities['F'] = (emotion_probs[4] * 0.7 + emotion_probs[6] * 0.7 + 
+        dimension_probabilities['F'] = (emotion_pros[4] * 0.7 + emotion_probs[6] * 0.7 + 
                                       emotion_probs[1] * 0.5 + emotion_probs[3] * 0.5)
         
         # Normalize T-F

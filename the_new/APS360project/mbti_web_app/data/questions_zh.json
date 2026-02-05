@@ -1,0 +1,98 @@
+{
+  "version": "1.0",
+  "language": "zh",
+  "last_updated": "2026-02-05",
+  "description": "MBTI人格测试问题 - 中文版",
+  "questions": [
+    {
+      "id": 1,
+      "question": "关于社交互动",
+      "description": "当你处于社交场合时，你通常如何与他人互动？你倾向于主动发起对话并在群体中活跃，还是更喜欢与少数人进行深入交谈？",
+      "dimension": "I/E",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 2,
+      "question": "关于问题解决",
+      "description": "面对复杂问题时，你通常如何寻找解决方案？你更依赖已知的事实和经验，还是更喜欢探索新的可能性和创新方法？",
+      "dimension": "S/N",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 3,
+      "question": "关于计划安排",
+      "description": "你如何规划日常生活和工作？你喜欢提前制定详细计划并遵循，还是更喜欢保持灵活，随机应变？",
+      "dimension": "J/P",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 4,
+      "question": "关于团队协作",
+      "description": "在团队环境中，你通常扮演什么角色？你更关注团队和谐和成员感受，还是更关心任务目标和效率？",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 5,
+      "question": "关于压力管理",
+      "description": "面对压力或紧急情况时，你通常如何应对？你会保持冷静并分析找到最佳解决方案，还是更容易受情绪影响并需要情感支持？",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 6,
+      "question": "关于休闲时光",
+      "description": "你如何度过休闲时间？你更喜欢参加社交活动和结识新朋友，还是倾向于独处或与亲密朋友在安静的环境中度过？",
+      "dimension": "I/E",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 7,
+      "question": "关于学习风格",
+      "description": "你更喜欢哪种学习方式？你更擅长学习具体实用的技能和事实，还是更喜欢掌握抽象概念和理论框架？",
+      "dimension": "S/N",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 8,
+      "question": "关于决策制定",
+      "description": "做重要决定时，你主要考虑什么因素？你基于逻辑和客观分析，还是更多考虑决定如何影响他人和关系？",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 9,
+      "question": "关于时间管理",
+      "description": "描述你的时间管理方法。你更喜欢结构化、有计划的生活，还是更享受自发、自由的安排？当计划被打乱时你会如何反应？",
+      "dimension": "J/P",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    },
+    {
+      "id": 10,
+      "question": "关于沟通风格",
+      "description": "描述你的沟通风格。你会直接表达想法和观点，还是会考虑听众的情感反应并调整表达方式？",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "zh",
+      "active": true
+    }
+  ]
+}

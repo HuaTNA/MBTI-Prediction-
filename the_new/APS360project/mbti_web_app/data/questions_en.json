@@ -1,0 +1,98 @@
+{
+  "version": "1.0",
+  "language": "en",
+  "last_updated": "2026-02-05",
+  "description": "MBTI personality test questions - English version",
+  "questions": [
+    {
+      "id": 1,
+      "question": "About Social Interactions",
+      "description": "When you're in a social setting, how do you typically interact with others? Do you tend to initiate conversations and be active in groups, or do you prefer deep conversations with fewer people?",
+      "dimension": "I/E",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 2,
+      "question": "About Problem Solving",
+      "description": "When faced with a complex problem, how do you typically look for solutions? Do you rely more on known facts and experience, or do you prefer exploring new possibilities and innovative methods?",
+      "dimension": "S/N",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 3,
+      "question": "About Planning",
+      "description": "How do you plan your daily life and work? Do you like making detailed plans in advance and following them, or do you prefer to stay flexible and adjust as you go?",
+      "dimension": "J/P",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 4,
+      "question": "About Teamwork",
+      "description": "In team settings, what role do you usually play? Are you more focused on team harmony and members' feelings, or more concerned with task goals and efficiency?",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 5,
+      "question": "About Stress Management",
+      "description": "When facing stress or emergencies, how do you typically respond? Do you stay calm and analyze to find the best solution, or are you more influenced by emotions and need emotional support?",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 6,
+      "question": "About Leisure Time",
+      "description": "How do you spend your leisure time? Do you prefer attending social activities and meeting new people, or do you tend to spend time alone or with close friends in quieter settings?",
+      "dimension": "I/E",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 7,
+      "question": "About Learning Styles",
+      "description": "Which learning style do you prefer? Are you better at learning concrete, practical skills and facts, or do you enjoy grasping abstract concepts and theoretical frameworks?",
+      "dimension": "S/N",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 8,
+      "question": "About Decision Making",
+      "description": "When making important decisions, what factors do you primarily consider? Do you base them on logic and objective analysis, or do you consider more how the decision affects people and relationships?",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 9,
+      "question": "About Time Management",
+      "description": "Describe your time management approach. Do you prefer structured, planned living, or do you enjoy more spontaneous, free arrangements? How do you react when plans are disrupted?",
+      "dimension": "J/P",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    },
+    {
+      "id": 10,
+      "question": "About Communication Style",
+      "description": "Describe your communication style. Do you directly express your thoughts and opinions, or do you consider listeners' emotional responses and adjust your expression style?",
+      "dimension": "T/F",
+      "version": "1.0",
+      "language": "en",
+      "active": true
+    }
+  ]
+}

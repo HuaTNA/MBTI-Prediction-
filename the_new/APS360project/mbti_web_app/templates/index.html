@@ -841,7 +841,17 @@
 <body>
     <div class="container">
         <h1>MBTI Emotion Recognition Test</h1>
-        
+
+        <!-- Language Switcher -->
+        <div style="position: absolute; top: 20px; right: 20px; z-index: 1000;">
+            <button onclick="switchLanguage('en')" style="padding: 8px 16px; margin-right: 5px; background: #C2D3DF; border: none; border-radius: 5px; cursor: pointer; font-family: inherit;">
+                English
+            </button>
+            <button onclick="switchLanguage('zh')" style="padding: 8px 16px; background: #D2DDD0; border: none; border-radius: 5px; cursor: pointer; font-family: inherit;">
+                中文
+            </button>
+        </div>
+
         <div class="section">
             <h2>Start Your Personality Journey!</h2>
             <p>This test will analyze your MBTI personality type by combining your facial expressions and verbal responses. The test includes multiple questions. Please click the start button and answer each question naturally!</p>
@@ -913,193 +923,170 @@
         let totalQuestions = 3; // 3 randomly selected questions
         let selectedQuestions = []; // Will store the randomly selected questions
         let currentSpeechText = ''; // To store accumulated speech text
-        
-        // MBTI test questions - expanded to 30 questions
-        const mbtiQuestions = [
+
+        // ================ NEW: Dynamic Question Loading ================
+        // Questions will be loaded from API instead of being hardcoded
+        let mbtiQuestions = [];  // Will be populated from backend API
+        let questionSessionId = null;  // Session ID for tracking
+        let questionVersion = null;  // Question version for tracking
+
+        // Minimal emergency backup questions (ONLY 3 - used if API completely fails)
+        const emergencyBackupQuestions = [
             {
                 id: 1,
-                question: "About Social Interactions",
-                description: "When you're in a social setting, how do you typically interact with others? Do you tend to initiate conversations and be active in groups, or do you prefer deep conversations with fewer people?",
-                dimension: "I/E" // Introversion/Extraversion
+                question: "Social Interaction",
+                description: "Do you prefer large group gatherings or intimate conversations with a few close friends?",
+                dimension: "I/E"
             },
             {
                 id: 2,
-                question: "About Problem Solving",
-                description: "When faced with a complex problem, how do you typically look for solutions? Do you rely more on known facts and experience, or do you prefer exploring new possibilities and innovative methods?",
-                dimension: "S/N" // Sensing/Intuition
+                question: "Problem Solving",
+                description: "Do you rely more on proven methods or explore new innovative approaches?",
+                dimension: "S/N"
             },
             {
                 id: 3,
-                question: "About Planning",
-                description: "How do you plan your daily life and work? Do you like making detailed plans in advance and following them, or do you prefer to stay flexible and adjust as you go?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 4,
-                question: "About Teamwork",
-                description: "In team settings, what role do you usually play? Are you more focused on team harmony and members' feelings, or more concerned with task goals and efficiency?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 5,
-                question: "About Stress Management",
-                description: "When facing stress or emergencies, how do you typically respond? Do you stay calm and analyze to find the best solution, or are you more influenced by emotions and need emotional support?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 6,
-                question: "About Leisure Time",
-                description: "How do you spend your leisure time? Do you prefer attending social activities and meeting new people, or do you tend to spend time alone or with close friends in quieter settings?",
-                dimension: "I/E" // Introversion/Extraversion
-            },
-            {
-                id: 7,
-                question: "About Learning Styles",
-                description: "Which learning style do you prefer? Are you better at learning concrete, practical skills and facts, or do you enjoy grasping abstract concepts and theoretical frameworks?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 8,
-                question: "About Decision Making",
-                description: "When making important decisions, what factors do you primarily consider? Do you base them on logic and objective analysis, or do you consider more how the decision affects people and relationships?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 9,
-                question: "About Time Management",
-                description: "Describe your time management approach. Do you prefer structured, planned living, or do you enjoy more spontaneous, free arrangements? How do you react when plans are disrupted?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 10,
-                question: "About Communication Style",
-                description: "Describe your communication style. Do you directly express your thoughts and opinions, or do you consider listeners' emotional responses and adjust your expression style?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 11,
-                question: "About Future Outlook",
-                description: "When thinking about the future, what aspects do you tend to consider? Do you focus on realistic possibilities and concrete steps, or do you think more about potential innovations and changes?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 12,
-                question: "About Energy Sources",
-                description: "What kinds of activities or environments make you feel energized? Is it vibrant social settings, or solitude or small-scale deep interactions?",
-                dimension: "I/E" // Introversion/Extraversion
-            },
-            {
-                id: 13,
-                question: "About Handling Conflict",
-                description: "How do you typically handle conflict or disagreement? Do you prioritize resolving the logical inconsistencies or focus more on maintaining harmony in relationships?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 14,
-                question: "About Creative Processes",
-                description: "Describe your creative process. Do you prefer structured approaches with clear guidelines, or do you favor open-ended exploration without many constraints?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 15,
-                question: "About Information Processing",
-                description: "When learning new information, how do you prefer to process it? Do you focus on details and specific facts, or do you look for patterns and broader connections?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 16,
-                question: "About Meeting New People",
-                description: "How do you feel when meeting new people? Are you energized and excited, or do you find it somewhat draining and prefer familiar faces?",
-                dimension: "I/E" // Introversion/Extraversion
-            },
-            {
-                id: 17,
-                question: "About Workplace Environment",
-                description: "What type of workplace environment helps you perform best? Do you prefer clear structures and predictable routines, or do you thrive in more flexible and adaptable settings?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 18,
-                question: "About Personal Values",
-                description: "When making ethical decisions, do you tend to rely more on universal principles and logical analysis, or do you consider more the specific circumstances and impacts on people involved?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 19,
-                question: "About Reading Preferences",
-                description: "What types of books or content do you prefer to read? Do you gravitate toward practical, factual material, or do you enjoy more theoretical, speculative, or imaginative content?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 20,
-                question: "About Group Discussions",
-                description: "In group discussions, are you more likely to speak up early and often, or do you prefer to listen and process before contributing your thoughts?",
-                dimension: "I/E" // Introversion/Extraversion
-            },
-            {
-                id: 21,
-                question: "About Routine and Change",
-                description: "How do you feel about routine versus change? Do you find comfort in established routines, or do you get bored and seek variety and new experiences?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 22,
-                question: "About Giving Feedback",
-                description: "When giving feedback or criticism, what approach do you take? Are you direct and focused on improvement, or are you more concerned with maintaining positive feelings?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 23,
-                question: "About Problem Analysis",
-                description: "When analyzing problems, do you typically focus on concrete, observable facts, or do you think about theoretical possibilities and what might be unseen?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 24,
-                question: "About Social Energy",
-                description: "After attending a social event, do you typically feel energized and ready for more, or do you need time alone to recharge?",
-                dimension: "I/E" // Introversion/Extraversion
-            },
-            {
-                id: 25,
-                question: "About Project Management",
-                description: "When managing a project, do you prefer to establish clear milestones and deadlines, or keep things open-ended to allow for adaptation and inspiration?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 26,
-                question: "About Emotional Responses",
-                description: "When making decisions, how much do you factor in your emotional responses? Do you try to set emotions aside for objectivity, or do you see them as valuable inputs?",
-                dimension: "T/F" // Thinking/Feeling
-            },
-            {
-                id: 27,
-                question: "About Learning Approach",
-                description: "When learning a new skill, do you prefer to learn step-by-step with practical examples, or start with understanding the underlying principles and concepts?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 28,
-                question: "About Conversation Topics",
-                description: "In conversations, do you tend to discuss concrete topics like current events and activities, or do you prefer abstract topics like ideas, theories and possibilities?",
-                dimension: "S/N" // Sensing/Intuition
-            },
-            {
-                id: 29,
-                question: "About Organization",
-                description: "How organized do you keep your physical and digital spaces? Do you have systematic organization methods, or do you prefer a more flexible, as-needed approach?",
-                dimension: "J/P" // Judging/Perceiving
-            },
-            {
-                id: 30,
-                question: "About Decision Factors",
-                description: "When facing a tough decision, are you more concerned with finding the most logical, rational choice regardless of how people feel, or with finding the option that best preserves harmony and wellbeing?",
-                dimension: "T/F" // Thinking/Feeling
+                question: "Planning",
+                description: "Do you prefer detailed plans or flexible spontaneous approaches?",
+                dimension: "J/P"
             }
         ];
+
+        // Function to get user's preferred language
+        function getUserPreferredLanguage() {
+            // Check localStorage first
+            const saved = localStorage.getItem('mbti_language');
+            if (saved) return saved;
+
+            // Check browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            if (browserLang && browserLang.startsWith('zh')) return 'zh';
+
+            return 'en';  // default to English
+        }
+
+        // Function to switch language
+        function switchLanguage(lang) {
+            localStorage.setItem('mbti_language', lang);
+            alert(`Language switched to ${lang === 'zh' ? 'Chinese' : 'English'}. Page will reload.`);
+            location.reload();  // Reload to fetch new questions
+        }
+
+        // Function to load questions from API
+        async function loadQuestionsFromAPI() {
+            try {
+                const language = getUserPreferredLanguage();
+                const count = 3;  // Number of questions to load
+
+                console.log(`Loading ${count} questions in ${language}...`);
+
+                const response = await fetch(
+                    `/api/questions?language=${language}&count=${count}&balanced=true`
+                );
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Update global variables
+                mbtiQuestions = data.questions;
+                questionSessionId = data.session_id;
+                questionVersion = data.version;
+
+                console.log(`✅ Loaded ${mbtiQuestions.length} questions (v${questionVersion}, session: ${questionSessionId})`);
+                console.log(`Questions by dimension:`, mbtiQuestions.map(q => q.dimension));
+
+                return true;
+
+            } catch (error) {
+                console.error('❌ Failed to load questions from API:', error);
+                console.warn('⚠️  Falling back to emergency backup questions');
+
+                // Fallback: use emergency backup questions
+                mbtiQuestions = emergencyBackupQuestions;
+                questionSessionId = 'emergency-' + Date.now();
+                questionVersion = '0.0-backup';
+
+                return false;
+            }
+        }
+
+        // Function to load MBTI descriptions from API
+        async function loadMBTIDescriptions() {
+            try {
+                const language = getUserPreferredLanguage();
+
+                console.log(`Loading MBTI descriptions in ${language}...`);
+
+                const response = await fetch(`/api/mbti/descriptions?language=${language}`);
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Update global variable
+                mbtiDescriptions = data.types;
+
+                console.log(`✅ Loaded ${Object.keys(mbtiDescriptions).length} MBTI type descriptions`);
+
+                return true;
+
+            } catch (error) {
+                console.error('❌ Failed to load MBTI descriptions from API:', error);
+                console.warn('⚠️  Falling back to emergency backup descriptions');
+
+                // Fallback: use emergency backup descriptions
+                mbtiDescriptions = emergencyMBTIDescriptions;
+
+                return false;
+            }
+        }
+
+        // Function to record question usage (for analytics)
+        async function recordQuestionUsage(predictionId, responses) {
+            try {
+                const questionUsageData = responses.map((response, index) => ({
+                    question_id: selectedQuestions[index].id,
+                    question_order: index + 1,
+                    user_response: response
+                }));
+
+                const payload = {
+                    prediction_id: predictionId,
+                    session_id: questionSessionId,
+                    questions: questionUsageData
+                };
+
+                const response = await fetch('/api/questions/usage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(`✅ Question usage recorded: ${data.recorded} questions`);
+                } else {
+                    console.warn('⚠️  Failed to record question usage');
+                }
+
+            } catch (error) {
+                console.error('Error recording question usage:', error);
+                // Don't fail the whole process if analytics fails
+            }
+        }
         
         // MBTI type descriptions
-        const mbtiDescriptions = {
+        // ================ MBTI Descriptions (loaded from API) ================
+        // MBTI type descriptions will be loaded from /api/mbti/descriptions
+        let mbtiDescriptions = {};  // Will be populated from backend API
+
+        // Minimal backup descriptions (ONLY used if API fails)
+        const emergencyMBTIDescriptions = {
             "ISTJ": {
                 title: "The Inspector",
                 description: "ISTJs are practical, disciplined, and reliable. They focus on details, are responsible, and excel at organizing and systematizing work. They follow tradition and rules, valuing order and structure.",
@@ -1188,49 +1175,55 @@
                                    'Sadness', 'Sadness', 'Surprise', 'Surprise'];
         
         // Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set up button event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Show loading indicator
+            console.log('Initializing MBTI assessment system...');
+
+            // STEP 1: Load questions from API
+            const questionsLoaded = await loadQuestionsFromAPI();
+
+            if (!questionsLoaded) {
+                console.warn('⚠️  Using backup questions - some features may be limited');
+            }
+
+            // STEP 1.5: Load MBTI descriptions from API
+            const descriptionsLoaded = await loadMBTIDescriptions();
+
+            if (!descriptionsLoaded) {
+                console.warn('⚠️  Using backup MBTI descriptions - some features may be limited');
+            }
+
+            // STEP 2: Set up button event listeners
             document.getElementById('start-test').addEventListener('click', startTest);
             document.getElementById('next-question').addEventListener('click', nextQuestion);
             document.getElementById('finish-test').addEventListener('click', finishTest);
-            
-            // Initialize speech recognition
+
+            // STEP 3: Initialize speech recognition
             initSpeechRecognition();
-            
-            // Select random questions
-            selectRandomQuestions();
-            
-            // Initialize progress indicator
+
+            // STEP 4: Prepare questions for display (API already selected them randomly)
+            prepareQuestionsForDisplay();
+
+            // STEP 5: Initialize progress indicator
             initProgressIndicator();
+
+            console.log('✅ System initialized successfully!');
         });
         
-        // Select random questions
-        function selectRandomQuestions() {
-            // Ensure we have at least one question from each dimension
-            const dimensions = ["I/E", "S/N", "T/F", "J/P"];
-            selectedQuestions = [];
-            
-            // Select one question from each dimension
-            for (const dimension of dimensions) {
-                const questionsForDimension = mbtiQuestions.filter(q => q.dimension === dimension);
-                const randomIndex = Math.floor(Math.random() * questionsForDimension.length);
-                const selectedQuestion = questionsForDimension[randomIndex];
-                selectedQuestions.push(selectedQuestion);
-            }
-            
-            // We only need 3 questions, so remove one random dimension
-            const randomDimensionToRemove = Math.floor(Math.random() * dimensions.length);
-            selectedQuestions.splice(randomDimensionToRemove, 1);
-            
-            // Sort questions by ID for consistent ordering
-            selectedQuestions.sort((a, b) => a.id - b.id);
-            
-            // Re-assign IDs for the selected questions
+        // Prepare questions for display (API already selected them randomly and balanced)
+        function prepareQuestionsForDisplay() {
+            // Use the questions we got from the API (already randomly selected and balanced)
+            selectedQuestions = mbtiQuestions.slice(); // Make a copy
+
+            // Add display IDs for UI purposes
             selectedQuestions.forEach((q, index) => {
                 q.displayId = index + 1;
             });
-            
-            // Initialize questions based on the random selection
+
+            console.log(`✅ Prepared ${selectedQuestions.length} questions for display`);
+            console.log(`   Dimensions: ${selectedQuestions.map(q => q.dimension).join(', ')}`);
+
+            // Initialize questions UI
             initQuestions();
         }
         
@@ -1746,14 +1739,23 @@
         function generateFinalResults() {
     // 在发送前添加日志记录，以便调试
     console.log("Sending responses for final analysis:", responses);
-    
+
+    // Prepare question IDs for tracking
+    const questionIds = selectedQuestions.map(q => q.id);
+
     // 发送所有回答以获取最终MBTI预测
     fetch('/api/final_results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ responses: responses })
+        body: JSON.stringify({
+            responses: responses,
+            // NEW: Add question tracking data
+            question_ids: questionIds,
+            session_id: questionSessionId,
+            question_version: questionVersion
+        })
     })
     .then(response => {
         if (!response.ok) {
@@ -1767,14 +1769,22 @@
     })
     .then(data => {
         console.log("Received final results:", data);  // 添加日志记录以便调试
-        
+
         if (data.error) {
             console.error("Error in server response:", data.error);
             document.getElementById('result-container').style.display = 'block';
             document.getElementById('mbti-result').innerHTML = `<p>Error generating results: ${data.error}</p>`;
             return;
         }
-        
+
+        // NEW: Record question usage for analytics (async, don't wait)
+        if (data.mbti_type) {
+            const predictionId = `pred-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            recordQuestionUsage(predictionId, responses).catch(err => {
+                console.warn('Failed to record question usage, but continuing:', err);
+            });
+        }
+
         // 显示结果容器
         document.getElementById('result-container').style.display = 'block';
         
