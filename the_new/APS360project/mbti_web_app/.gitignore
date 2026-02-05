@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# PostgreSQL
+*.sql
+*.dump
+
+# Environment variables (contains passwords!)
+.env
+.env.local
+
+# User data and results
+MBTI_Results/
+mbti_assessment_*.json  # User result files
+database_backup_*.json  # Database backups
+
+# Model files (too large)
+models/emotion/*.pth
+models/text/ml/*.pkl
+models/text/dl/*.pt
+models/face_detection/*.caffemodel
+
+# Logs
+*.log
+app.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak

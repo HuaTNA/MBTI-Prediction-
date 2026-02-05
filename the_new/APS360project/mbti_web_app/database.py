@@ -1,111 +1,117 @@
 """
-PostgreSQL 数据库管理模块
+PostgreSQL Database Management Module
 """
 
 import os
 import json
 from datetime import datetime
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, Integer, String, Text, Float, DateTime, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.dialects.postgresql import JSON
 import logging
 
+# Load environment variables from .env file
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
-# 数据库配置
+# Database configuration
+# Use environment variable for production, fallback to default for development
+# Set DATABASE_URL environment variable or create a .env file
 DATABASE_URL = os.getenv(
     'DATABASE_URL',
     'postgresql://postgres:password@localhost:5432/mbti_predictions'
 )
 
-# 创建 SQLAlchemy engine 和 session
+# Create SQLAlchemy engine and session
 engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-# ===================== 数据模型定义 =====================
+# ===================== Data Model Definitions =====================
 
 class PredictionData(Base):
-    """预测数据表"""
+    """Prediction data table"""
     __tablename__ = 'prediction_data'
 
     prediction_id = Column(String(36), primary_key=True)  # UUID
-    session_id = Column(String(36), index=True)  # 关联到 question session
+    session_id = Column(String(36), index=True)  # Associated with question session
     timestamp = Column(DateTime, default=datetime.utcnow)
 
-    # 预测结果
+    # Prediction results
     predicted_mbti = Column(String(4), index=True)
 
-    # 各维度得分 (JSON)
+    # Dimension scores (JSON)
     dimension_scores = Column(JSON)  # {"I": 0.6, "E": 0.4, "S": 0.7, ...}
 
-    # 文本输入
+    # Text input
     text_responses = Column(JSON)  # [{"question_id": 1, "response": "..."}]
 
-    # 情绪数据 (JSON)
+    # Emotion data (JSON)
     emotion_data = Column(JSON)  # [{"timestamp": "...", "emotion": "happy", "confidence": 0.8}]
 
-    # 元数据
+    # Metadata
     language = Column(String(10), default='en')
     question_version = Column(String(20))
     model_version = Column(String(20))
 
-    # 关系
+    # Relationships
     question_usages = relationship("QuestionUsage", back_populates="prediction")
 
 
 class QuestionUsage(Base):
-    """问题使用记录表"""
+    """Question usage record table"""
     __tablename__ = 'question_usage'
 
     usage_id = Column(String(36), primary_key=True)
     prediction_id = Column(String(36), ForeignKey('prediction_data.prediction_id'))
     question_id = Column(Integer, index=True)
-    question_order = Column(Integer)  # 第几个问题
+    question_order = Column(Integer)  # Which question number
 
-    # 用户回答
+    # User response
     user_response_text = Column(Text)
     response_length = Column(Integer)
 
-    # 关系
+    # Relationships
     prediction = relationship("PredictionData", back_populates="question_usages")
 
 
 class UserSession(Base):
-    """用户会话表"""
+    """User session table"""
     __tablename__ = 'user_sessions'
 
     session_id = Column(String(36), primary_key=True)
     start_time = Column(DateTime, default=datetime.utcnow)
     end_time = Column(DateTime, nullable=True)
 
-    # 会话信息
+    # Session information
     user_agent = Column(String(200))
     ip_address = Column(String(45))  # IPv6 support
 
-    # 完成状态
+    # Completion status
     completed = Column(Boolean, default=False)
 
 
-# ===================== 数据库初始化 =====================
+# ===================== Database Initialization =====================
 
 def init_database():
-    """初始化数据库，创建所有表"""
+    """Initialize database and create all tables"""
     try:
         Base.metadata.create_all(bind=engine)
-        logger.info("✅ 数据库表创建成功")
+        logger.info("✓ Database tables created successfully")
         return True
     except Exception as e:
-        logger.error(f"❌ 数据库初始化失败: {e}")
+        logger.error(f"✗ Database initialization failed: {e}")
         return False
 
 
-# ===================== 数据库操作函数 =====================
+# ===================== Database Operation Functions =====================
 
 def get_db():
-    """获取数据库会话"""
+    """Get database session"""
     db = SessionLocal()
     try:
         yield db
@@ -125,18 +131,18 @@ def save_prediction(
     model_version: str = '1.0'
 ):
     """
-    保存预测结果到数据库
+    Save prediction results to database
 
-    参数:
-        prediction_id: 预测ID (UUID)
-        session_id: 会话ID
-        predicted_mbti: 预测的MBTI类型
-        dimension_scores: 各维度得分 {"I": 0.6, "E": 0.4, ...}
-        text_responses: 文本回答 [{"question_id": 1, "response": "..."}]
-        emotion_data: 情绪数据 (可选)
-        language: 语言
-        question_version: 问题版本
-        model_version: 模型版本
+    Args:
+        prediction_id: Prediction ID (UUID)
+        session_id: Session ID
+        predicted_mbti: Predicted MBTI type
+        dimension_scores: Dimension scores {"I": 0.6, "E": 0.4, ...}
+        text_responses: Text responses [{"question_id": 1, "response": "..."}]
+        emotion_data: Emotion data (optional)
+        language: Language
+        question_version: Question version
+        model_version: Model version
     """
     db = SessionLocal()
     try:
@@ -155,12 +161,12 @@ def save_prediction(
         db.add(prediction)
         db.commit()
 
-        logger.info(f"✅ 保存预测结果: {prediction_id} -> {predicted_mbti}")
+        logger.info(f"✓ Saved prediction result: {prediction_id} -> {predicted_mbti}")
         return True
 
     except Exception as e:
         db.rollback()
-        logger.error(f"❌ 保存预测失败: {e}")
+        logger.error(f"✗ Failed to save prediction: {e}")
         return False
     finally:
         db.close()
@@ -174,14 +180,14 @@ def save_question_usage(
     user_response_text: str
 ):
     """
-    保存问题使用记录
+    Save question usage record
 
-    参数:
-        usage_id: 使用记录ID (UUID)
-        prediction_id: 关联的预测ID
-        question_id: 问题ID
-        question_order: 问题顺序（第几个）
-        user_response_text: 用户回答文本
+    Args:
+        usage_id: Usage record ID (UUID)
+        prediction_id: Associated prediction ID
+        question_id: Question ID
+        question_order: Question order (which number)
+        user_response_text: User response text
     """
     db = SessionLocal()
     try:
@@ -197,12 +203,12 @@ def save_question_usage(
         db.add(usage)
         db.commit()
 
-        logger.info(f"✅ 保存问题使用: Q{question_id} for {prediction_id}")
+        logger.info(f"✓ Saved question usage: Q{question_id} for {prediction_id}")
         return True
 
     except Exception as e:
         db.rollback()
-        logger.error(f"❌ 保存问题使用失败: {e}")
+        logger.error(f"✗ Failed to save question usage: {e}")
         return False
     finally:
         db.close()
@@ -213,7 +219,7 @@ def create_user_session(
     user_agent: str = None,
     ip_address: str = None
 ):
-    """创建用户会话记录"""
+    """Create user session record"""
     db = SessionLocal()
     try:
         session = UserSession(
@@ -225,19 +231,19 @@ def create_user_session(
         db.add(session)
         db.commit()
 
-        logger.info(f"✅ 创建会话: {session_id}")
+        logger.info(f"✓ Created session: {session_id}")
         return True
 
     except Exception as e:
         db.rollback()
-        logger.error(f"❌ 创建会话失败: {e}")
+        logger.error(f"✗ Failed to create session: {e}")
         return False
     finally:
         db.close()
 
 
 def complete_user_session(session_id: str):
-    """标记会话为已完成"""
+    """Mark session as completed"""
     db = SessionLocal()
     try:
         session = db.query(UserSession).filter_by(session_id=session_id).first()
@@ -245,27 +251,27 @@ def complete_user_session(session_id: str):
             session.completed = True
             session.end_time = datetime.utcnow()
             db.commit()
-            logger.info(f"✅ 会话完成: {session_id}")
+            logger.info(f"✓ Session completed: {session_id}")
             return True
         return False
 
     except Exception as e:
         db.rollback()
-        logger.error(f"❌ 更新会话失败: {e}")
+        logger.error(f"✗ Failed to update session: {e}")
         return False
     finally:
         db.close()
 
 
-# ===================== 统计查询函数 =====================
+# ===================== Statistics Query Functions =====================
 
 def get_prediction_statistics():
-    """获取预测统计信息"""
+    """Get prediction statistics"""
     db = SessionLocal()
     try:
         total_predictions = db.query(PredictionData).count()
 
-        # 各MBTI类型数量
+        # Count of each MBTI type
         mbti_counts = {}
         for mbti_type in ['INTJ', 'INTP', 'ENTJ', 'ENTP',
                           'INFJ', 'INFP', 'ENFJ', 'ENFP',
@@ -281,14 +287,14 @@ def get_prediction_statistics():
         }
 
     except Exception as e:
-        logger.error(f"❌ 获取统计失败: {e}")
+        logger.error(f"✗ Failed to get statistics: {e}")
         return None
     finally:
         db.close()
 
 
 def get_recent_predictions(limit=10):
-    """获取最近的预测记录"""
+    """Get recent prediction records"""
     db = SessionLocal()
     try:
         predictions = db.query(PredictionData)\
@@ -308,16 +314,16 @@ def get_recent_predictions(limit=10):
         return results
 
     except Exception as e:
-        logger.error(f"❌ 获取预测记录失败: {e}")
+        logger.error(f"✗ Failed to get prediction records: {e}")
         return []
     finally:
         db.close()
 
 
-# ===================== 导出数据函数 =====================
+# ===================== Data Export Functions =====================
 
 def export_training_data(output_file='training_data.json'):
-    """导出所有数据用于模型训练"""
+    """Export all data for model training"""
     db = SessionLocal()
     try:
         predictions = db.query(PredictionData).all()
@@ -337,11 +343,11 @@ def export_training_data(output_file='training_data.json'):
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(training_data, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"✅ 导出 {len(training_data)} 条数据到 {output_file}")
+        logger.info(f"✓ Exported {len(training_data)} records to {output_file}")
         return True
 
     except Exception as e:
-        logger.error(f"❌ 导出数据失败: {e}")
+        logger.error(f"✗ Failed to export data: {e}")
         return False
     finally:
         db.close()

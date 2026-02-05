@@ -1,66 +1,66 @@
 """
-数据库设置和初始化脚本
+Database Setup and Initialization Script
 """
 
 import os
 from database import init_database, get_prediction_statistics
 
 print("=" * 60)
-print("PostgreSQL 数据库初始化")
+print("PostgreSQL Database Initialization")
 print("=" * 60)
 
-# 步骤1: 检查环境变量
+# Step 1: Check environment variables
 database_url = os.getenv('DATABASE_URL')
 if database_url:
-    print(f"✅ 使用环境变量中的数据库URL")
+    print(f"Using DATABASE_URL from environment variables")
 else:
-    print("⚠️  未设置 DATABASE_URL 环境变量")
-    print("   使用默认: postgresql://postgres:password@localhost:5432/mbti_predictions")
+    print("WARNING: DATABASE_URL environment variable not set")
+    print("   Using default: postgresql://postgres:password@localhost:5432/mbti_predictions")
     print()
-    print("   设置方法:")
+    print("   How to set:")
     print("   PowerShell: $env:DATABASE_URL='your_database_url'")
     print("   Linux/Mac: export DATABASE_URL='your_database_url'")
     print()
 
-# 步骤2: 初始化数据库
-print("\n正在创建数据库表...")
+# Step 2: Initialize database
+print("\nCreating database tables...")
 if init_database():
-    print("✅ 数据库初始化成功！")
+    print("Database initialization successful!")
     print()
-    print("创建的表:")
-    print("  - prediction_data (预测数据)")
-    print("  - question_usage (问题使用记录)")
-    print("  - user_sessions (用户会话)")
+    print("Tables created:")
+    print("  - prediction_data (prediction records)")
+    print("  - question_usage (question usage logs)")
+    print("  - user_sessions (user sessions)")
 else:
-    print("❌ 数据库初始化失败")
+    print("ERROR: Database initialization failed")
     print()
-    print("请检查:")
-    print("  1. PostgreSQL 是否已安装并运行")
-    print("  2. 数据库 'mbti_predictions' 是否存在")
-    print("  3. 用户名和密码是否正确")
+    print("Please check:")
+    print("  1. PostgreSQL is installed and running")
+    print("  2. Database 'mbti_predictions' exists")
+    print("  3. Username and password are correct")
     print()
-    print("创建数据库命令 (PostgreSQL):")
+    print("Create database command (PostgreSQL):")
     print("  psql -U postgres")
     print("  CREATE DATABASE mbti_predictions;")
     exit(1)
 
-# 步骤3: 测试连接
-print("\n正在测试数据库连接...")
+# Step 3: Test connection
+print("\nTesting database connection...")
 try:
     stats = get_prediction_statistics()
     if stats is not None:
-        print("✅ 数据库连接成功！")
-        print(f"\n当前数据库统计:")
-        print(f"  总预测数: {stats['total_predictions']}")
+        print("Database connection successful!")
+        print(f"\nCurrent database statistics:")
+        print(f"  Total predictions: {stats['total_predictions']}")
         if stats['most_common']:
-            print(f"  最常见类型: {stats['most_common']}")
+            print(f"  Most common type: {stats['most_common']}")
     else:
-        print("⚠️  数据库连接成功但查询失败")
+        print("WARNING: Database connected but query failed")
 except Exception as e:
-    print(f"❌ 数据库连接失败: {e}")
+    print(f"ERROR: Database connection failed: {e}")
     exit(1)
 
 print("\n" + "=" * 60)
-print("✅ 数据库设置完成！")
+print("Database setup complete!")
 print("=" * 60)
-print("\n现在可以运行: python app.py")
+print("\nYou can now run: python app.py")
