@@ -3,7 +3,16 @@
     "allow": [
       "Bash(python -c:*)",
       "Bash(Get-Service postgresql*)",
-      "Bash(powershell.exe:*)"
+      "Bash(powershell.exe:*)",
+      "Bash(dir:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(py -m pip install:*)",
+      "Bash(py:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git restore:*)"
     ]
   }
 }
